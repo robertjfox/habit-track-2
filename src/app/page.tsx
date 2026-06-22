@@ -1,7 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useStore, todayKey, shiftKey, formatDayLong } from "@/lib/store";
+import {
+  useStore,
+  todayKey,
+  shiftKey,
+  formatDayLong,
+  isWeekend,
+  WORK_CATEGORY_ID,
+} from "@/lib/store";
 import { CategoryCard } from "@/components/CategoryCard";
 
 export default function Home() {
@@ -26,9 +33,13 @@ export default function Home() {
         ? "Yesterday"
         : formatDayLong(day);
 
+  const weekend = isWeekend(day);
   const orderedCategories = useMemo(
-    () => [...state.categories].sort((a, b) => a.createdAt - b.createdAt),
-    [state.categories]
+    () =>
+      [...state.categories]
+        .filter((c) => !(weekend && c.id === WORK_CATEGORY_ID))
+        .sort((a, b) => a.createdAt - b.createdAt),
+    [state.categories, weekend]
   );
 
   return (

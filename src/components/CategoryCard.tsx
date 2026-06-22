@@ -2,17 +2,26 @@
 
 import { useState } from "react";
 import type { Category, Habit } from "@/lib/types";
-import { useStore, shiftKey } from "@/lib/store";
+import { useStore, shiftKey, isWeekend, WORK_CATEGORY_ID } from "@/lib/store";
 import { AddHabitModal } from "./AddHabitModal";
 import { HabitIcon } from "./HabitIcon";
 
 const TRAIL_DAYS = 30;
 
-// Returns the last `n` day keys ending at (and including) `endKey`, oldest first.
-function trailingDayKeys(endKey: string, n: number): string[] {
+// Returns the last `n` day keys ending at (and including) `endKey`, oldest
+// first. When `skipWeekends` is set, Saturdays and Sundays are omitted, so the
+// result contains the last `n` weekdays instead.
+function trailingDayKeys(
+  endKey: string,
+  n: number,
+  skipWeekends = false
+): string[] {
   const keys: string[] = [];
-  for (let i = n - 1; i >= 0; i--) {
-    keys.push(shiftKey(endKey, -i));
+  let cursor = endKey;
+  // Bound the walk so we never loop forever even with weekends skipped.
+  for (let steps = 0; keys.length < n && steps < n * 3; steps++) {
+    if (!skipWeekends || !isWeekend(cursor)) keys.unshift(cursor);
+    cursor = shiftKey(cursor, -1);
   }
   return keys;
 }
@@ -87,7 +96,11 @@ export function CategoryCard({
                   <HabitIcon id={habit.id} emoji={habit.emoji} size={22} />
                 </span>
                 <div className="flex flex-1 gap-[2px]">
-                  {trailingDayKeys(day, TRAIL_DAYS).map((k) => {
+                  {trailingDayKeys(
+                    day,
+                    TRAIL_DAYS,
+                    category.id === WORK_CATEGORY_ID
+                  ).map((k) => {
                     const d = isComplete(habit.id, k);
                     return (
                       <span

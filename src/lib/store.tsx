@@ -5,6 +5,9 @@ import type { AppState, Category, Habit } from "./types";
 
 const STORAGE_KEY = "habit-tracker";
 
+// The Work category is hidden on weekends and its history strip omits them.
+export const WORK_CATEGORY_ID = "cat-work";
+
 const EMPTY_STATE: AppState = {
   categories: [],
   habits: [],
@@ -109,6 +112,18 @@ export function shiftKey(key: string, deltaDays: number): string {
 
 export function formatDayLong(key: string): string {
   return LONG_FMT.format(new Date(`${key}T12:00:00Z`));
+}
+
+// Day of week for a "YYYY-MM-DD" key (0 = Sunday … 6 = Saturday). The weekday
+// of a calendar date is timezone-independent, so UTC is fine here.
+export function weekdayOf(key: string): number {
+  const [y, m, d] = key.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+}
+
+export function isWeekend(key: string): boolean {
+  const w = weekdayOf(key);
+  return w === 0 || w === 6;
 }
 
 function loadState(): AppState {
