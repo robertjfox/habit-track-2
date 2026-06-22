@@ -12,7 +12,6 @@ const EMOJI_BY_ID: Record<string, string> = {
   "h-w7": "🏢",
   "h-he2": "💪",
   "h-he3": "🤸",
-  "h-he5": "🥩",
   "h-p2": "📖",
 };
 

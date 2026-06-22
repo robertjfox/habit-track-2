@@ -27,18 +27,25 @@ const SEED_HABITS: Habit[] = [
   { id: "h-he1", categoryId: "cat-health", name: "Run", emoji: "🏃", createdAt: 7 },
   { id: "h-he2", categoryId: "cat-health", name: "Lift", emoji: "💪", createdAt: 8 },
   { id: "h-he3", categoryId: "cat-health", name: "Stretch", emoji: "🤸", createdAt: 9 },
-  { id: "h-he4", categoryId: "cat-health", name: "Jiu jitsu", emoji: "🥋", createdAt: 10 },
-  { id: "h-he5", categoryId: "cat-health", name: "Eat enough protein", emoji: "🥩", createdAt: 18 },
+  { id: "h-he6", categoryId: "cat-health", name: "Tennis", emoji: "🎾", createdAt: 19 },
+  { id: "h-he7", categoryId: "cat-health", name: "Golf", emoji: "⛳", createdAt: 20 },
   { id: "h-p1", categoryId: "cat-personal", name: "Meditate", emoji: "🧘", createdAt: 11 },
   { id: "h-p2", categoryId: "cat-personal", name: "Read 30 mins", emoji: "📖", createdAt: 12 },
-  { id: "h-p4", categoryId: "cat-personal", name: "Make plans", emoji: "📅", createdAt: 14 },
-  { id: "h-p5", categoryId: "cat-personal", name: "No tech in the morning", emoji: "📵", createdAt: 16 },
   { id: "h-p6", categoryId: "cat-personal", name: "Journal 1 page", emoji: "📓", createdAt: 17 },
 ];
 
 // Seed habits removed after they were already persisted; stripped on load so
 // they disappear from existing installs too.
-const REMOVED_HABIT_IDS = new Set(["h-p3", "h-w2", "h-w3", "h-w4"]);
+const REMOVED_HABIT_IDS = new Set([
+  "h-p3",
+  "h-w2",
+  "h-w3",
+  "h-w4",
+  "h-he4",
+  "h-he5",
+  "h-p4",
+  "h-p5",
+]);
 
 // Fresh installs start with the categories and habits, but no completion
 // history.
